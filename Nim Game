@@ -9,8 +9,8 @@ For example, if there are 4 stones in the heap, then you will never win the game
 class Solution {
 public:
     bool canWinNim(int n) {
-    if(n%4==0)
-    return false;
-    else return true;
+        if(n%4==0)
+        return false;
+        else return true;
     }
 };
