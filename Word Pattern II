@@ -1,0 +1,45 @@
+/*
+Given a pattern and a string str, find if str follows the same pattern.
+Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty substring in str.
+Examples:
+pattern = "abab", str = "redblueredblue" should return true.
+pattern = "aaaa", str = "asdasdasdasd" should return true.
+pattern = "aabb", str = "xyzabcxzyabc" should return false.
+Notes:
+You may assume both pattern and str contains only lowercase letters.
+*/
+public:
+  bool wordPatternMatch(string pattern, string str) {
+    return dfs(pattern, 0, str, 0);
+  }
+  bool dfs(string pattern, int startp, string str, int starts){
+    if(startp == pattern.length() && starts == str.length()){
+      return true;
+    }
+    if(startp == pattern.length() || starts == str.length()){
+      return false;
+    }
+    if(P2S.find(pattern[startp]) == P2S.end()){
+      for(int i = 1;i + starts < str.length();i++){
+        if(S2P.find(str.substr(starts,i)) != S2P.end())
+          continue;
+        P2S[pattern[startp]] = str.substr(starts,i);
+        S2P[str.substr(starts,i)] = pattern[startp];
+        if(dfs(pattern, startp+1, str, starts+i))
+          return true;
+        S2P.erase(str.substr(starts,i));;
+      }
+      P2S.erase(pattern[startp]);
+      return false;
+    }
+    else{
+      string temp = P2S[pattern[startp]];
+      if(temp == str.substr(starts,temp.length()))
+        dfs(pattern, startp+1, str, starts+temp.length());
+      else 
+        return false;
+    }
+  }
+private:
+  unordered_map<char, string> P2S;
+  unordered_map<string, char> S2P;
