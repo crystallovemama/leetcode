@@ -1,0 +1,39 @@
+/*
+Given a collection of numbers that might contain duplicates, return all possible unique permutations.
+
+For example,
+[1,1,2] have the following unique permutations:
+[1,1,2], [1,2,1], and [2,1,1].
+*/
+    void backtrack2(vector<int> &num, vector<vector<int> > &res,
+    vector<int> path,vector<bool> flags)
+{
+    if( num.size() == path.size() )
+    {
+        res.push_back(path);
+    }
+    else
+    {
+        for( int i = 0; i < num.size(); i++ )
+        {
+            if( !flags[i]){
+                if (i > 0 && num[i] == num[i-1] && flags[i-1]) {
+                    return;
+                }
+                path.push_back(num[i]);
+                flags[i] = true;
+                backtrack2( num, res, path, flags );
+                flags[i] = false;
+                path.pop_back();
+            }
+        }
+    }
+}
+    vector<vector<int> > permuteUnique(vector<int> &num) {
+        sort(num.begin(),num.end());
+        vector<vector<int> > res;   // result
+        vector<bool> flags( num.size(), false);    // bool, whether num[i] is choosed
+        vector<int> path;     // num have been choosed
+        backtrack2(num, res, path, flags);   //backtrack
+        return res;
+    }
