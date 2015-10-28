@@ -1,0 +1,16 @@
+/*
+Given a string, determine if a permutation of the string could form a palindrome.
+
+For example,
+"code" -> False, "aab" -> True, "carerac" -> True.
+*/
+ bool canPermutePalindrome(string s) {
+    int dict[256] = {0};
+    for (auto c: s)
+        dict[c]++;
+    int cnt = 0;
+    for (int i=0; i<256; i++){
+        if (dict[i] % 2 != 0)   cnt++;
+    }
+    return cnt<=1;
+}
